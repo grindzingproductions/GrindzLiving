@@ -1,0 +1,37 @@
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.util.Scanner;
+
+public class StreamingClient {
+    public static void main(String[] args) {
+        try {
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.print("Enter stream name: ");
+            String streamName = scanner.nextLine();
+
+            System.out.print("Enter stream description: ");
+            String streamDescription = scanner.nextLine();
+
+            System.out.print("Enter window title to capture: ");
+            String windowTitle = scanner.nextLine();
+
+            Socket socket = new Socket("localhost", 8888);
+            OutputStream outputStream = socket.getOutputStream();
+
+            // Send stream information
+            String streamInfo = streamName + "|" + streamDescription + "|" + windowTitle;
+            outputStream.write(streamInfo.getBytes());
+
+            // Simulate streaming (you would implement actual screen capturing here)
+            System.out.println("Streaming started. Press Enter to stop.");
+            scanner.nextLine();
+
+            // Close the socket
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

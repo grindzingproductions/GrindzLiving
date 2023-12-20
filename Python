@@ -1,0 +1,28 @@
+import socket
+import threading
+
+def handle_client(client_socket):
+    stream_info = client_socket.recv(1024).decode()
+    stream_name, stream_description, window_title = stream_info.split('|')
+
+    print(f"New stream: {stream_name}\nDescription: {stream_description}\nWindow Title: {window_title}")
+
+    # Simulate streaming (you would implement actual streaming logic here)
+
+    # Close the client socket
+    client_socket.close()
+
+def main():
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind(('0.0.0.0', 8888))
+    server.listen(5)
+
+    print("Streaming server listening on port 8888...")
+
+    while True:
+        client_socket, addr = server.accept()
+        client_handler = threading.Thread(target=handle_client, args=(client_socket,))
+        client_handler.start()
+
+if __name__ == "__main__":
+    main()
